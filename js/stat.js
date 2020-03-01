@@ -19,7 +19,7 @@ function GetChainGrowthRate(data) {
     let array = [0];
     for (let i = 1; i < data.length; ++i) {
         let growthRate = 0;
-            if (data[i - 1] !== 0) {
+        if (data[i - 1] !== 0) {
             growthRate = (data[i - 1] !== 0) ? data[i] / data[i - 1] * 100 : 0;
         }
         array.push(growthRate.toFixed(presicion));
@@ -59,19 +59,89 @@ function GetAverageUpGrowthRate(data) {
 
 function GetForecastByAverageIncrease(data) {
     let forecast = [parseFloat(data[data.length - 1]) + parseFloat(GetAverageIncrease(data))];
-    for (let i = 1; i < forecastCount; ++i)
-    {
+    for (let i = 1; i < forecastCount; ++i) {
         forecast.push(forecast[i - 1] + parseFloat(GetAverageIncrease(data)));
     }
-    console.log(forecast);
     return forecast;
 }
 
 function GetForecastByAverageGrowthRate(data) {
     let forecast = [(data[data.length - 1] * GetAverageGrowthRate(data) / 100).toFixed(presicion)];
-    for (let i = 1; i < forecastCount; ++i)
-    {
+    for (let i = 1; i < forecastCount; ++i) {
         forecast.push((forecast[i - 1] * GetAverageGrowthRate(data) / 100).toFixed(presicion));
     }
     return forecast;
 }
+
+function GetMedian(data) {
+    let copy = data.slice();
+    const half = Math.floor(copy.length / 2);
+    copy.sort(function (a, b) {
+        return a - b;
+    });
+    return copy.length % 2 ? copy[half] : (copy[half] + copy[half] + 1) / 2.0;
+}
+
+function GetSignArray(data) {
+    let array = [];
+    const median = GetMedian(data);
+    data.forEach(function (item) {
+        if (item > median)
+        {
+            array.push('+');
+        }
+        else if (item < median)
+        {
+            array.push('-')
+        }
+        else
+        {
+            array.push(' ');
+        }
+    });
+    return array;
+}
+
+function GetSeriesCount(data) {
+    const signArray = GetSignArray(data);
+    let seriesCount = 1;
+    for (let i = 1; i < signArray.length; ++i)
+    {
+        if (signArray[i] != signArray[i - 1])
+        {
+            ++seriesCount;
+        }
+    }
+    return seriesCount;
+}
+
+function GetMaxSeriesLength(data) {
+    const signArray = GetSignArray(data);
+    let maxLength = 0;
+    let length = 0;
+    for (let i = 1; i < signArray.length; ++i)
+    {
+        if (signArray[i] != signArray[i - 1])
+        {
+            if (length > maxLength)
+            {
+                maxLength = length;
+            }
+            length = 1;
+        }
+        else
+        {
+            ++length;
+        }
+    }
+    return maxLength;
+}
+
+function GetMaxSeriesCriterion(n) {
+    return parseFloat(Math.abs(3.3 * Math.log10(n + 1)).toFixed(presicion));
+}
+
+function GetMinSeriesCount(n) {
+    return parseFloat(Math.abs(0.5 * (n + 1 - 1.96 * Math.pow(n - 2, 0.5))).toFixed(presicion));
+}
+

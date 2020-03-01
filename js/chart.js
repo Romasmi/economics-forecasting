@@ -1,10 +1,8 @@
 
-function DrawChart(data, containerSelector) {
+function DrawChart(data, containerSelector, labels = GenerateLabels(data[0])) {
     const dataToDraw = {
-        labels: GenerateLabels(data),
-        series: [
-            data
-        ]
+        labels: labels,
+        series: data
     };
 
     new Chartist.Line(containerSelector, dataToDraw);
