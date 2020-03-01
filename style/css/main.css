@@ -12,6 +12,10 @@ h3 {
   text-align: center;
 }
 
+h3 {
+  font-size: 1.3rem;
+}
+
 .data-count {
   margin-bottom: 10px;
 }

@@ -6,7 +6,7 @@ function GetArrayFromText(text) {
 
 function ConvertToNumericArray(array)
 {
-    array = array.map(item => parseFloat(item));
+    array = array.map(item => parseFloat(item.replace(',', '.')));
     return array;
 }
 
@@ -17,4 +17,27 @@ function MultiplyArrays(array1, array2) {
         result.push(parseFloat(((array1[i] * array2[i])).toFixed(presicion)));
     }
     return result;
+}
+
+function ValuesAreLessThenN(array, n) {
+    let result = true;
+    for (i of array)
+    {
+        if (!isNaN(parseInt(i)) && i > n)
+        {
+            result = false;
+            break;
+        }
+    }
+
+    return result;
+}
+
+function GetSum(arr, from = 0, to = arr.length) {
+    let sum = 0;
+    for (let i = from; i < to; ++i)
+    {
+        sum += arr[i];
+    }
+    return sum.toFixed(presicion);
 }

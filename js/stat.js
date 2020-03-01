@@ -1,20 +1,57 @@
-function GetNormalizedDataByIrwinMethod(data) {
-
+function GetIrwinMethodData(data) {
+    const standardDeviation0 = GetStandardDeviation0(data);
+    let array = [];
+    array[0] = '-';
+    for (let i = 1; i < data.length; ++i) {
+        const value = (Math.abs(data[i] - data[i - 1])) / standardDeviation0;
+        array.push(value.toFixed(presicion));
+    }
+    return array;
 }
 
-function GetStandardDeviation(data) {
+function GetIrwinCriticalNumber(n) {
+    return (-229.21 * Math.pow(n, -3) +
+            422.39 * Math.pow(n, -2.5) -
+            320.96 * Math.pow(n, -2) +
+            124.594 * Math.pow(n, -1.5) -
+            26.15 * Math.pow(n, -1) +
+            4.799 * Math.pow(n, -0.5) +
+            0.7029).toFixed(presicion);
+}
+
+function CorrectDataByIrwinMethod(irwinData, irwinCriticalNumber) {
+    let correctedValuesNumber = [];
+    for (i = 1; i < irwinData.length - 1; ++i)
+    {
+        if (irwinData[i] > irwinCriticalNumber)
+        {
+            correctedValuesNumber.push(i + 1);
+            window.data[i] = (window.data[i - 1] + window.data[i + 1]) / 2;
+        }
+    }
+    return correctedValuesNumber.join(', ');
+}
+
+function GetStandardDeviation0(data) {
     const unbiasedDispersion = GetUnbiasedDispersion(data);
     return Math.sqrt(unbiasedDispersion);
 }
 
 function GetUnbiasedDispersion(data) {
     const average = GetAverage(data);
-    return data => data.reduce((sum,value) => sum + value - average, 0) / (data.length - 1);
+    return data.reduce((sum,value) => sum + Math.pow(value - average, 2), 0) / (data.length - 1);
 }
 
-function GetAverage(d) {
-    const result  = data => data.reduce((sum,value) => sum + value, 0) / data.length;
-    return result;
+function GetAverage(data) {
+    return data.reduce((sum,value) => sum + value, 0) / data.length;
+}
+
+function GetFosterStewartDeltaD(n) {
+    return Math.sqrt(2 * Math.log(n) - 0.8456).toFixed(presicion);
+}
+
+function GetTStudentCriterion(n) {
+
 }
 
 function GetChainAbsoluteIncrease(data) {
@@ -94,11 +131,11 @@ function GetForecastByAverageGrowthRate(data) {
 
 function GetMedian(data) {
     let copy = data.slice();
-    const half = Math.floor(copy.length / 2);
     copy.sort(function (a, b) {
         return a - b;
     });
-    return copy.length % 2 ? copy[half] : (copy[half] + copy[half] + 1) / 2.0;
+    let mediana = copy.length % 2 === 0 ? (copy[copy.length / 2 - 1] + copy[copy.length / 2]) / 2 : copy[(copy.length - 1) / 2];
+    return mediana.toFixed(presicion);
 }
 
 function GetSignArray(data) {
@@ -115,7 +152,7 @@ function GetSignArray(data) {
         }
         else
         {
-            array.push(' ');
+            array.push('nope');
         }
     });
     return array;
@@ -124,11 +161,18 @@ function GetSignArray(data) {
 function GetSeriesCount(data) {
     const signArray = GetSignArray(data);
     let seriesCount = 1;
+    let lastSign = signArray[0];
     for (let i = 1; i < signArray.length; ++i)
     {
-        if (signArray[i] != signArray[i - 1])
+        if (signArray[i] === 'nope')
+        {
+            continue;
+        }
+
+        if (signArray[i] != lastSign)
         {
             ++seriesCount;
+            lastSign = signArray[i];
         }
     }
     return seriesCount;
@@ -138,10 +182,19 @@ function GetMaxSeriesLength(data) {
     const signArray = GetSignArray(data);
     let maxLength = 0;
     let length = 0;
+    let lastSign = signArray[0];
     for (let i = 1; i < signArray.length; ++i)
     {
-        if (signArray[i] != signArray[i - 1])
+        if (signArray[i] === 'nope')
         {
+            continue;
+        }
+
+        if (signArray[i] != lastSign)
+        {
+            ++seriesCount;
+            lastSign = signArray[i];
+
             if (length > maxLength)
             {
                 maxLength = length;

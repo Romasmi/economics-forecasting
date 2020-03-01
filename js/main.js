@@ -6,23 +6,64 @@ $(function () {
     LaunchApp();
 });
 
-function LaunchApp()
-{
+function LaunchApp() {
     const input = $('#inputData').val();
-    const data = ConvertToNumericArray(GetArrayFromText(input));
 
+    window.data = ConvertToNumericArray(GetArrayFromText(input));
     window.presicion = $('#precision').val();
     window.forecastCount = $('#forecastCount').val();
 
-    console.log(GetAverage(data));
+    $('.dataCount').html(data.length);
 
-    DoSesearchOfTimeSeries(data);
-    DoResearchOfTrend(data);
-    ShowModels(data);
+    DoPreliminaryAnalysis(data, '.prelitary-analysis');
+    //DoResearchOfTimeSeries(data, '#researchOfTimeSeries');
+    //DoResearchOfTrend(data, '#trendChecking');
+    //ShowModels(data);
 }
 
-function DoSesearchOfTimeSeries (data) {
-    DrawChart([data], '#inputDataChart');
+function DoPreliminaryAnalysis(data, selector) {
+    $(selector).show();
+
+    const dataCopy = data.slice();
+    DrawChart([dataCopy], '#inputDataChart');
+
+    const irwinData = GetIrwinMethodData(data);
+    const irwinCriticalNumber = GetIrwinCriticalNumber(data.length);
+    $('#irwinCriticalNumber').html(irwinCriticalNumber);
+
+    PrintTableBody('#irwinMethodData',
+        [
+            GenerateLabels(data),
+            data,
+            irwinData
+        ],
+        data.length);
+
+    const hasAbnormalValues = !ValuesAreLessThenN(irwinData, irwinCriticalNumber);
+    let irwinResultMessage = '';
+    if (hasAbnormalValues) {
+        const listOfAbnormalValuesList = CorrectDataByIrwinMethod(irwinData, irwinCriticalNumber);
+        irwinResultMessage = 'Исходные ряд имеет аномальные значений: ' + listOfAbnormalValuesList + '. Они замененны средними соседних уровней.';
+        DrawChart([data], '#correctedInputDataChart');
+        $('#correctedData').show();
+
+        PrintTableBody('#correctedDataTable',
+            [
+                GenerateLabels(data),
+                data
+            ],
+            data.length);
+    } else {
+        irwinResultMessage = 'Аномальных значений не найдено. Исходный ряд остаётся без изменений.';
+    }
+
+    $('#irwinCheckingResultMessage').html(irwinResultMessage);
+
+}
+
+function DoResearchOfTimeSeries(data, sectionSelector) {
+    $(sectionSelector).show();
+
     PrintTableBody('#mainIndicatorsOfTheDynamic',
         [
             GenerateLabels(data),
@@ -43,13 +84,19 @@ function DoSesearchOfTimeSeries (data) {
 
     PrintTableBody('#forecastTable',
         [
-            GenerateNumberArray(data.length, data.length + forecastCount - 1),
+            GenerateNumberArray(data.length + 1, data.length + forecastCount),
             GetForecastByAverageIncrease(data),
             GetForecastByAverageGrowthRate(data)
         ], forecastCount);
 }
 
-function DoResearchOfTrend(data) {
+function DoResearchOfTrend(data, selector) {
+    $(selector).show();
+    DoResearchOfTdendByMedian(data);
+    DoResearchOfTrendByFosterStewart(data);
+}
+
+function DoResearchOfTdendByMedian(data) {
     const median = GetMedian(data);
     const signArray = GetSignArray(data, median);
 
@@ -71,14 +118,76 @@ function DoResearchOfTrend(data) {
     $('#maxSeriesCriterion').html(maxSeriesCriterion);
     $('#minSeriesCount').html(minSeriesCount);
 
-    if (seriesCount > minSeriesCount && maxSeriesLength < maxSeriesCriterion)
-    {
+    if (seriesCount > minSeriesCount && maxSeriesLength < maxSeriesCriterion) {
         $('#medianMethodReview').html('с вероятность 95% гипотеза о наличии тренда не отвергается');
-    }
-    else
-    {
+    } else {
         $('#medianMethodReview').html('гипотеза об отсутствии тренда отвергается с вероятностью ошибки 5%');
     }
+
+}
+
+function DoResearchOfTrendByFosterStewart(data) {
+    let fosterStewartMethodData = CalcDataForFosterStewartMethod(data);
+    let dCriterion = GetSum(fosterStewartMethodData[2], 1);
+    let deltaD = GetFosterStewartDeltaD(data.length);
+    let tObserved = (dCriterion / deltaD).toFixed(presicion);
+    let tCritical = AStudentT(data.length - 1, 0.05);
+
+    let resultMessage = '';
+    if (Math.abs(tObserved) > tCritical) {
+        resultMessage = 'Гипотеза об отсутствии тренда отвергается  с вероятностью ошибки 5%';
+    } else {
+        resultMessage = 'Гипотеза об отсутствии тренда принимается с вероятностью ошибки 5%';
+    }
+
+    $('#fosterStewartDCriterian').html(dCriterion);
+    $('#fosterStewartDeltaD').html(deltaD);
+    $('#fosterStewartTObserved').html(tObserved);
+    $('#fosterStewartTCritiсal').html(tCritical);
+    $('#fosterStewartTResult').html(resultMessage);
+
+    PrintTableBody('#fosterStewartTable',
+        [
+            GenerateLabels(data),
+            data,
+            fosterStewartMethodData[0],
+            fosterStewartMethodData[1],
+            fosterStewartMethodData[2]
+        ],
+        data.length);
+}
+
+function CalcDataForFosterStewartMethod(data) {
+    let m = [];
+    let l = [];
+    let d = [];
+    m[0] = '-';
+    l[0] = '-';
+    d[0] = '-';
+
+    for (i = 1; i < data.length; ++i) {
+        let more = true;
+        for (let k = 0; k < i; ++k) {
+            if (data[i] <= data[k]) {
+                more = false;
+                break;
+            }
+        }
+        m[i] = more ? 1 : 0;
+
+        let less = true;
+
+        for (let k = 0; k < i; ++k) {
+            if (data[i] >= data[k]) {
+                less = false;
+                break;
+            }
+        }
+        l[i] = less ? 1 : 0;
+        d[i] = m[i] - l[i];
+    }
+
+    return [m, l, d];
 }
 
 function ShowModels(data) {
@@ -118,12 +227,9 @@ function ShowLinearNonCenteredModel(data) {
 
 function ShowLinearCenteredModel(data) {
     let seriesStart;
-    if (data.length % 2 == 0)
-    {
+    if (data.length % 2 == 0) {
         seriesStart = data.length / 2;
-    }
-    else
-    {
+    } else {
         seriesStart = (data.length - 1) / 2;
     }
 
