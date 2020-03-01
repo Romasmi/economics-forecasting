@@ -1,5 +1,4 @@
 $(function () {
-
     $('#launchAppButton').on('click', function () {
         LaunchApp();
     });
@@ -14,6 +13,8 @@ function LaunchApp()
 
     window.presicion = $('#precision').val();
     window.forecastCount = $('#forecastCount').val();
+
+    console.log(GetAverage(data));
 
     DoSesearchOfTimeSeries(data);
     DoResearchOfTrend(data);

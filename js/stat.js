@@ -1,3 +1,22 @@
+function GetNormalizedDataByIrwinMethod(data) {
+
+}
+
+function GetStandardDeviation(data) {
+    const unbiasedDispersion = GetUnbiasedDispersion(data);
+    return Math.sqrt(unbiasedDispersion);
+}
+
+function GetUnbiasedDispersion(data) {
+    const average = GetAverage(data);
+    return data => data.reduce((sum,value) => sum + value - average, 0) / (data.length - 1);
+}
+
+function GetAverage(d) {
+    const result  = data => data.reduce((sum,value) => sum + value, 0) / data.length;
+    return result;
+}
+
 function GetChainAbsoluteIncrease(data) {
     let array = [0];
     for (let i = 1; i < data.length; ++i) {
