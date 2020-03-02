@@ -351,96 +351,171 @@
         </div>
       </div>
     </section>
-
-    <section class="section" style="display: none;">
-      <h2>Построение моделей</h2>
-      <h3>Линейная нецентрированная</h3>
-      <div class="row">
-        <div class="col-md-4">
-          <table class="table table-hover table-striped">
-            <thead>
-              <tr>
-                <th>t</th>
-                <th>y(t)</th>
-                <th>y(t) * t</th>
-                <th>t^t</th>
-              </tr>
-            </thead>
-            <tbody id="linearNonCenteredModelData"></tbody>
-          </table>
-          <ul>
-            <li>Сумма t: <span class="value" id="linearNonCenteredModelTSum"></span></li>
-            <li>Сумма y(t): <span class="value" id="linearNonCenteredModelYOfTSum"></span></li>
-            <li>Сумма y(t) * t: <span class="value" id="linearNonCenteredModelYOfTonTSum"></span></li>
-            <li>Сумма t^t: <span class="value" id="linearNonCenteredModelTOnTSum"></span></li>
-            <li>a1: <span class="value" id="linearNonCenteredModelA1"></span></li>
-            <li>a: <span class="value" id="linearNonCenteredModelA0"></span></li>
-            <li>Линейная модель: <span class="value" id="linearNonCenteredModel"></span></li>
+    <section id="models" class="section" style="display: none;">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#linearModel" role="tab" aria-controls="home"
+             aria-selected="true">Линейная</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#parabolicModel" role="tab" aria-controls="profile"
+             aria-selected="false">Параболическая</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="linearModel" role="tabpanel" aria-labelledby="home-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#linearCenteredModel" role="tab" aria-controls="home"
+                 aria-selected="true">Центрированная</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#linearNonCenteredModel" role="tab" aria-controls="profile"
+                 aria-selected="false">Нецентрированная</a>
+            </li>
           </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="linearCenteredModel" role="tabpanel" aria-labelledby="home-tab">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#linearCenteredModelResult" role="tab" aria-controls="home"
+                     aria-selected="true">Результат</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#linearCenteredModelTable" role="tab" aria-controls="profile"
+                     aria-selected="false">Рассчётная таблица</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="linearCenteredModelResult" role="tabpanel" aria-labelledby="home-tab">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <ul>
+                        <li>Сумма t: <span class="value" id="linearCenteredModelTSum"></span></li>
+                        <li>Сумма y(t): <span class="value" id="linearCenteredModelYOfTSum"></span></li>
+                        <li>Сумма y(t) * t: <span class="value" id="linearCenteredModelYOfTonTSum"></span></li>
+                        <li>Сумма t^t: <span class="value" id="linearCenteredModelTOnTSum"></span></li>
+                        <li>a1: <span class="value" id="linearCenteredModelA1"></span></li>
+                        <li>a: <span class="value" id="linearCenteredModelA0"></span></li>
+                        <li>Линейная модель: <span class="value" id="linearCenteredModelEquation"></span></li>
+                      </ul>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="ct-chart ct-perfect-fourth" id="linearCenteredModelChart"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="linearCenteredModelTable" role="tabpanel" aria-labelledby="profile-tab">
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th>t</th>
+                        <th>y(t)</th>
+                        <th>y(t)</th>
+                        <th>t^t</th>
+                      </tr>
+                    </thead>
+                    <tbody id="linearCenteredModelTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="linearNonCenteredModel" role="tabpanel" aria-labelledby="profile-tab">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#linearNonCenteredModelResult" role="tab" aria-controls="home"
+                     aria-selected="true">Результат</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#linearNonCenteredModelTable" role="tab" aria-controls="profile"
+                     aria-selected="false">Рассчётная таблица</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="linearNonCenteredModelResult" role="tabpanel" aria-labelledby="home-tab">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <ul>
+                        <li>Сумма t: <span class="value" id="linearNonCenteredModelTSum"></span></li>
+                        <li>Сумма y(t): <span class="value" id="linearNonCenteredModelYOfTSum"></span></li>
+                        <li>Сумма y(t) * t: <span class="value" id="linearNonCenteredModelYOfTonTSum"></span></li>
+                        <li>Сумма t^t: <span class="value" id="linearNonCenteredModelTOnTSum"></span></li>
+                        <li>a1: <span class="value" id="linearNonCenteredModelA1"></span></li>
+                        <li>a: <span class="value" id="linearNonCenteredModelA0"></span></li>
+                        <li>Линейная модель: <span class="value" id="linearNonCenteredModelEquation"></span></li>
+                      </ul>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="ct-chart ct-perfect-fourth" id="linearNonCenteredModelChart"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="linearNonCenteredModelTable" role="tabpanel" aria-labelledby="profile-tab">
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th>t</th>
+                        <th>y(t)</th>
+                        <th>y(t)</th>
+                        <th>t^t</th>
+                      </tr>
+                    </thead>
+                    <tbody id="linearNonCenteredModelTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-8">
-          <div class="ct-chart ct-perfect-fourth" id="linearNonCenteredModelChart"></div>
-        </div>
-      </div>
-      <h3>Линейная центрированная</h3>
-      <div class="row">
-        <div class="col-md-4">
-          <table class="table table-hover table-striped">
-            <thead>
-              <tr>
-                <th>t</th>
-                <th>y(t)</th>
-                <th>y(t) * t</th>
-                <th>t^t</th>
-              </tr>
-            </thead>
-            <tbody id="linearCenteredModelData"></tbody>
-          </table>
-          <ul>
-            <li>Сумма t: <span class="value" id="linearCenteredModelTSum"></span></li>
-            <li>Сумма y(t): <span class="value" id="linearCenteredModelYOfTSum"></span></li>
-            <li>Сумма y(t) * t: <span class="value" id="linearCenteredModelYOfTonTSum"></span></li>
-            <li>Сумма t^t: <span class="value" id="linearCenteredModelTOnTSum"></span></li>
-            <li>a1: <span class="value" id="linearCenteredModelA1"></span></li>
-            <li>a: <span class="value" id="linearCenteredModelA0"></span></li>
-            <li>Линейная модель: <span class="value" id="linearCenteredModel"></span></li>
+        <div class="tab-pane fade" id="parabolicModel" role="tabpanel" aria-labelledby="profile-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#parabolicModelResult" role="tab" aria-controls="home"
+                 aria-selected="true">Результат</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#parabolicModelTable" role="tab" aria-controls="profile"
+                 aria-selected="false">Рассчётная таблица</a>
+            </li>
           </ul>
-        </div>
-        <div class="col-md-8">
-          <div class="ct-chart ct-perfect-fourth" id="linearCenteredModelChart"></div>
-        </div>
-      </div>
-      <h3>Параболическая модель</h3>
-      <div class="row">
-        <div class="col-md-4">
-          <table class="table table-hover table-striped">
-            <thead>
-              <tr>
-                <th>t</th>
-                <th>y(t)</th>
-                <th>y(t) * t</th>
-                <th>t^t</th>
-                <th>y(t) * t^t</th>
-                <th>t^4</th>
-              </tr>
-            </thead>
-            <tbody id="parabolicModelData"></tbody>
-          </table>
-          <ul>
-            <li>Сумма t: <span class="value" id="parabolicModelTSum"></span></li>
-            <li>Сумма y(t): <span class="value" id="parabolicModelYOfTSum"></span></li>
-            <li>Сумма y(t) * t: <span class="value" id="parabolicModelYOfTonTSum"></span></li>
-            <li>Сумма t^t: <span class="value" id="parabolicModelTOnTSum"></span></li>
-            <li>Сумма y(t) * t^t: <span class="value" id="parabolicModelYofTonTOnTSum"></span></li>
-            <li>Сумма t^4: <span class="value" id="parabolicModelTIn4Sum"></span></li>
-            <li>a2: <span class="value" id="parabolicModelA2"></span></li>
-            <li>a1: <span class="value" id="parabolicModelA1"></span></li>
-            <li>a: <span class="value" id="parabolicModelA0"></span></li>
-            <li>Полиномиальная модель: <span class="value" id="parabolicModel2"></span></li>
-          </ul>
-        </div>
-        <div class="col-md-8">
-          <div class="ct-chart ct-perfect-fourth" id="parabolicModel2Chart"></div>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="parabolicModelResult" role="tabpanel" aria-labelledby="home-tab">
+              <div class="row">
+                <div class="col-md-4">
+                  <ul>
+                    <li>Сумма t: <span class="value" id="parabolicModelTSum"></span></li>
+                    <li>Сумма y(t): <span class="value" id="parabolicModelYOfTSum"></span></li>
+                    <li>Сумма y(t) * t: <span class="value" id="parabolicModelYOfTonTSum"></span></li>
+                    <li>Сумма t^t: <span class="value" id="parabolicModelTOnTSum"></span></li>
+                    <li>Сумма y(t) * t^t: <span class="value" id="parabolicModelYofTonTOnTSum"></span></li>
+                    <li>Сумма t^4: <span class="value" id="parabolicModelTIn4Sum"></span></li>
+                    <li>a2: <span class="value" id="parabolicModelA2"></span></li>
+                    <li>a1: <span class="value" id="parabolicModelA1"></span></li>
+                    <li>a: <span class="value" id="parabolicModelA0"></span></li>
+                    <li>Полиномиальная модель: <span class="value" id="parabolicModel2"></span></li>
+                  </ul>
+                </div>
+                <div class="col-md-8">
+                  <div class="ct-chart ct-perfect-fourth" id="parabolicModel2Chart"></div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="parabolicModelTable" role="tabpanel" aria-labelledby="profile-tab">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>t</th>
+                    <th>y(t)</th>
+                    <th>y(t) * t</th>
+                    <th>t^t</th>
+                    <th>y(t) * t^t</th>
+                    <th>t^4</th>
+                  </tr>
+                </thead>
+                <tbody id="parabolicModelTableBody"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </section>

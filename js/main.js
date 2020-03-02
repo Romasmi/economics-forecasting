@@ -18,8 +18,8 @@ function LaunchApp() {
     DoPreliminaryAnalysis(data, '.prelitary-analysis');
     //DoResearchOfTimeSeries(data, '#researchOfTimeSeries');
     //DoResearchOfTrend(data, '#trendChecking');
-    DoSmoothingByMovingAverage(data, '#smoothing');
-    //ShowModels(data);
+    //DoSmoothingByMovingAverage(data, '#smoothing');
+    ShowModels(data, '#models');
 }
 
 function DoPreliminaryAnalysis(data, selector) {
@@ -213,7 +213,9 @@ function DoSmoothingByMovingAverage(data, selector) {
         data.length);
 }
 
-function ShowModels(data) {
+function ShowModels(data, selector) {
+    $(selector).show();
+    
     ShowLinearNonCenteredModel(data);
     ShowLinearCenteredModel(data);
     ShowParabolicModel(data);
@@ -230,7 +232,7 @@ function ShowLinearNonCenteredModel(data) {
     const a1 = (data.length * yOfTonTSum - yOfTSum * tSum) / (data.length * tOnTSum - Math.pow(tSum, 2));
     const a0 = yOfTSum / data.length - a1 * tSum / data.length;
 
-    PrintTableBody('#linearNonCenteredModelData', [
+    PrintTableBody('#linearNonCenteredModelTableBody', [
         GenerateLabels(data),
         data,
         MultiplyArrays(tArray, data),
@@ -243,7 +245,7 @@ function ShowLinearNonCenteredModel(data) {
     $('#linearNonCenteredModelTOnTSum').html(tOnTSum.toFixed(presicion));
     $('#linearNonCenteredModelA1').html(a1.toFixed(presicion));
     $('#linearNonCenteredModelA0').html(a0.toFixed(presicion));
-    $('#linearNonCenteredModel').html(`y = ${a1.toFixed(presicion)} * x + ${a0.toFixed(presicion)}`);
+    $('#linearNonCenteredModelEquation').html(`y = ${a1.toFixed(presicion)} * x + ${a0.toFixed(presicion)}`);
 
     DrawChart([data, tArray.map(item => a1 * item + a0)], '#linearNonCenteredModelChart');
 }
@@ -266,7 +268,7 @@ function ShowLinearCenteredModel(data) {
     const a1 = (data.length * yOfTonTSum - yOfTSum * tSum) / (data.length * tOnTSum - Math.pow(tSum, 2));
     const a0 = yOfTSum / data.length - a1 * tSum / data.length;
 
-    PrintTableBody('#linearCenteredModelData', [
+    PrintTableBody('#linearCenteredModelTableBody', [
         tArray,
         data,
         MultiplyArrays(tArray, data),
@@ -279,7 +281,7 @@ function ShowLinearCenteredModel(data) {
     $('#linearCenteredModelTOnTSum').html(tOnTSum.toFixed(presicion));
     $('#linearCenteredModelA1').html(a1.toFixed(presicion));
     $('#linearCenteredModelA0').html(a0.toFixed(presicion));
-    $('#linearCenteredModel').html(`y = ${a1.toFixed(presicion)} * x + ${a0.toFixed(presicion)}`);
+    $('#linearCenteredModelEquation').html(`y = ${a1.toFixed(presicion)} * x + ${a0.toFixed(presicion)}`);
 
     DrawChart([data, tArray.map(item => a1 * item + a0)], '#linearCenteredModelChart', tArray);
 }
@@ -298,7 +300,7 @@ function ShowParabolicModel(data) {
     const a1 = yOfTonTSum / tOnTSum;
     const a0 = yOfTSum / data.length - a2 * tOnTSum / data.length;
 
-    PrintTableBody('#parabolicModelData', [
+    PrintTableBody('#parabolicModelTableBody', [
         GenerateLabels(data),
         data,
         MultiplyArrays(tArray, data),
