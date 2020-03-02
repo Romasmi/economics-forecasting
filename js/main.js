@@ -4,6 +4,14 @@ $(function () {
     });
 
     LaunchApp();
+
+    $('.update-chartist').on('click', function () {
+        let code = $(this).data('func') + "(data);";
+        let f = new Function(code);
+        setTimeout(function () {
+            f();
+        }, 300);
+    });
 });
 
 function LaunchApp() {
