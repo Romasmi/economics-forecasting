@@ -50,10 +50,6 @@ function GetFosterStewartDeltaD(n) {
     return Math.sqrt(2 * Math.log(n) - 0.8456).toFixed(presicion);
 }
 
-function GetTStudentCriterion(n) {
-
-}
-
 function GetChainAbsoluteIncrease(data) {
     let array = [0];
     for (let i = 1; i < data.length; ++i) {
@@ -134,7 +130,7 @@ function GetMedian(data) {
     copy.sort(function (a, b) {
         return a - b;
     });
-    let mediana = copy.length % 2 === 0 ? (copy[copy.length / 2 - 1] + copy[copy.length / 2]) / 2 : copy[(copy.length - 1) / 2];
+    let mediana = isEven(copy.length) ? (copy[copy.length / 2 - 1] + copy[copy.length / 2]) / 2 : copy[(copy.length - 1) / 2];
     return mediana.toFixed(presicion);
 }
 
@@ -217,3 +213,52 @@ function GetMinSeriesCount(n) {
     return parseFloat(Math.abs(0.5 * (n + 1 - 1.96 * Math.pow(n - 2, 0.5))).toFixed(presicion));
 }
 
+function GetDataByMovingAverageMethod(data, gInterval, coefficient = 1) {
+    let arr = [];
+
+    const g = isEven(gInterval) ? gInterval + 1 : gInterval;
+    const middle = (g + 1) / 2;
+    const begin = middle - 1;
+    const end = data.length - middle;
+
+    if (isEven(gInterval))
+    {
+        for (let i = begin; i <= end; ++i)
+        {
+            arr[i] = (GetSum(data, i - middle + 2, i + middle - 1) +
+                data[i - middle + 1] / 2 +
+                data[i + middle - 1] / 2) / gInterval;
+        }
+    }
+    else
+    {
+        for (let i = begin; i <= end; ++i)
+        {
+            arr[i] = GetSum(data, i - middle + 1, i + middle) / g;
+        }
+    }
+
+    const startAverageAbsoluteGrowth = GetStartAverageAbsoluteGrowth(data, g);
+    for (let i = begin - 1; i >= 0;  --i)
+    {
+        arr[i] = arr[i + 1] - startAverageAbsoluteGrowth;
+    }
+
+    const endAverageAbsoluteGrowth = GetEndAverageAbsoluteGrowth(data, g);
+    for (let i = end + 1; i < data.length;  ++i)
+    {
+        arr[i] = arr[i - 1] + endAverageAbsoluteGrowth;
+    }
+
+    SetArrItemsPresicion(arr, presicion);
+
+    return arr;
+}
+
+function GetStartAverageAbsoluteGrowth(data, g) {
+    return (data[g - 1] - data[0]) / 2;
+}
+
+function GetEndAverageAbsoluteGrowth(data, g) {
+    return (data[data.length - 1] - data[data.length - g]) / 2;
+}

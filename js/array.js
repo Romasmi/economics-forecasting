@@ -39,5 +39,12 @@ function GetSum(arr, from = 0, to = arr.length) {
     {
         sum += arr[i];
     }
-    return sum.toFixed(presicion);
+    return sum;
+}
+
+function SetArrItemsPresicion(data, presicion) {
+    for (let i = 0; i < data.length; ++i)
+    {
+        data[i] = data[i].toFixed(presicion);
+    }
 }

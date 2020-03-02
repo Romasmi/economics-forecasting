@@ -18,6 +18,7 @@ function LaunchApp() {
     DoPreliminaryAnalysis(data, '.prelitary-analysis');
     //DoResearchOfTimeSeries(data, '#researchOfTimeSeries');
     //DoResearchOfTrend(data, '#trendChecking');
+    DoSmoothingByMovingAverage(data, '#smoothing');
     //ShowModels(data);
 }
 
@@ -190,6 +191,28 @@ function CalcDataForFosterStewartMethod(data) {
     return [m, l, d];
 }
 
+function DoSmoothingByMovingAverage(data, selector) {
+    $('#smoothing').show();
+
+    const simpleSmoothing3 = GetDataByMovingAverageMethod(data, 3);
+    const simpleSmoothing4 = GetDataByMovingAverageMethod(data, 4);
+    const simpleSmoothing5 = GetDataByMovingAverageMethod(data, 5);
+
+    DrawChart([data, simpleSmoothing3], '#simpleSmoothing3');
+    DrawChart([data, simpleSmoothing4], '#simpleSmoothing4');
+    DrawChart([data, simpleSmoothing5], '#simpleSmoothing5');
+
+    PrintTableBody('#simpleSmoothingTableBody',
+        [
+            GenerateLabels(data),
+            data,
+            simpleSmoothing3,
+            simpleSmoothing4,
+            simpleSmoothing5
+        ],
+        data.length);
+}
+
 function ShowModels(data) {
     ShowLinearNonCenteredModel(data);
     ShowLinearCenteredModel(data);
@@ -227,7 +250,7 @@ function ShowLinearNonCenteredModel(data) {
 
 function ShowLinearCenteredModel(data) {
     let seriesStart;
-    if (data.length % 2 == 0) {
+    if (isEven(data.length)) {
         seriesStart = data.length / 2;
     } else {
         seriesStart = (data.length - 1) / 2;

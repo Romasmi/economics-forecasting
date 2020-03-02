@@ -262,6 +262,96 @@
         </div>
       </div>
     </section>
+    <section id="smoothing" class="section" style="display: none;">
+      <h2>Сглаживание методом скользящей средней</h2>
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#simpleSmoothing" role="tab" aria-controls="home"
+             aria-selected="true">Простой</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#weightedSmoothing" role="tab" aria-controls="profile"
+             aria-selected="false">Взвешенной</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="simpleSmoothing" role="tabpanel" aria-labelledby="home-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#simpleSmoothingResult" role="tab" aria-controls="home"
+                 aria-selected="true">Результат</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#simpleSmoothingTable" role="tab" aria-controls="profile"
+                 aria-selected="false">Рассчётная таблица</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="simpleSmoothingResult" role="tabpanel" aria-labelledby="home-tab">
+              <div class="row">
+                <div class="col-md-6">
+                  <h3>График простых скользящих средних g = 3</h3>
+                  <div class="ct-chart ct-perfect-fourth" id="simpleSmoothing3"></div>
+                </div>
+                <div class="col-md-6">
+                  <h3>График простых скользящих средних g = 4</h3>
+                  <div class="ct-chart ct-perfect-fourth" id="simpleSmoothing4"></div>
+                </div>
+                <div class="col-md-6 offset-md-3">
+                  <h3>График простых скользящих средних g = 5</h3>
+                  <div class="ct-chart ct-perfect-fourth" id="simpleSmoothing5"></div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="simpleSmoothingTable" role="tabpanel" aria-labelledby="profile-tab">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>t</th>
+                    <th>y(t)</th>
+                    <th>g = 3</th>
+                    <th>g = 4</th>
+                    <th>g = 5</th>
+                  </tr>
+                </thead>
+                <tbody id="simpleSmoothingTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="weightedSmoothing" role="tabpanel" aria-labelledby="profile-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#weightedSmoothingResult" role="tab" aria-controls="home"
+                 aria-selected="true">Результат</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#weightedSmoothingResultTable" role="tab" aria-controls="profile"
+                 aria-selected="false">Рассчётная таблица</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="weightedSmoothingResult" role="tabpanel" aria-labelledby="home-tab">
+            </div>
+            <div class="tab-pane fade" id="weightedSmoothingResultTable" role="tabpanel" aria-labelledby="profile-tab">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>t</th>
+                    <th>y(t)</th>
+                    <th>m</th>
+                    <th>l</th>
+                    <th>d</th>
+                  </tr>
+                </thead>
+                <tbody id="weightedSmoothingResultTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section" style="display: none;">
       <h2>Построение моделей</h2>
       <h3>Линейная нецентрированная</h3>
@@ -358,6 +448,7 @@
       <script src="bower_components/jquery/dist/jquery.min.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
       <script src="bower_components/chartist/dist/chartist.min.js"></script>
+      <script src="js/math.js"></script>
       <script src="js/array.js"></script>
       <script src="js/stat_const.js"></script>
       <script src="js/stat.js"></script>
