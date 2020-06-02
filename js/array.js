@@ -47,7 +47,6 @@ function GetSumByMultiplying(arr, from = 0, to = arr.length, coefficient) {
     let j = 0;
     for (let i = from; i < to; ++i)
     {
-        console.log(arr[i], coefficient[j]);
         sum += arr[i] * coefficient[j];
         ++j;
     }
@@ -74,4 +73,8 @@ function GenerateArrayByHalf(array) {
     }
 
     return generatedArray;
+}
+
+function SetArrayPrecision(array) {
+    return array.map(item => item.toFixed(presicion));
 }

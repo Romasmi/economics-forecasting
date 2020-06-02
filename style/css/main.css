@@ -28,12 +28,42 @@ h3 {
   font-weight: bold;
 }
 
-.total-information-list .value {
+.info-list {
+  padding-left: 20px;
+}
+.info-list .value {
   font-weight: bold;
 }
 
 .section {
   padding-top: 25px;
+}
+
+.ct-perfect-fourth {
+  height: 75vh;
+  overflow: hidden;
+}
+
+.data-table-container,
+.info-block {
+  max-height: 75vh;
+  overflow-y: scroll;
+}
+
+.tab-pane {
+  padding-top: 15px;
+}
+
+.info-block h3 {
+  text-align: left;
+}
+
+.sortable {
+  cursor: pointer;
+}
+
+.ct-series-b .ct-bar, .ct-series-b .ct-line, .ct-series-b .ct-point, .ct-series-b .ct-slice-donut {
+  stroke: #28a745;
 }
 
 /*# sourceMappingURL=main.css.map */

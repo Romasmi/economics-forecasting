@@ -1,4 +1,6 @@
 $(function () {
+    window.commonModelInformationContainerSelector = '#modelsTableBody';
+
     $('#launchAppButton').on('click', function () {
         LaunchApp();
     });
@@ -18,9 +20,35 @@ $(function () {
             f();
         }, 300);
     });
+
+    let $menu = $("#menu");
+    $(window).scroll(function(){
+        var $sections = $('section');
+        $sections.each(function(i,el){
+            var top  = $(el).offset().top-100;
+            var bottom = top +$(el).height();
+            var scroll = $(window).scrollTop();
+            var id = $(el).attr('id');
+            if( scroll > top && scroll < bottom){
+                $menu.find('a.active').removeClass('active');
+                $('a[href="#'+id+'"]').addClass('active');
+            }
+        })
+    });
+
+    $menu.on("click","a", function (event) {
+        event.preventDefault();
+        var id  = $(this).attr('href'),
+            top = $(id).offset().top;
+        $('body,html').animate({scrollTop: top - $menu.height()}, 800);
+    });
+
+    $('#modelsCommonInformationTable').tablesorter();
 });
 
 function LaunchApp() {
+    window.modelTableLogEnabled = true;
+
     $inputData = $('#inputData');
     const input = $inputData.val();
 
@@ -31,11 +59,13 @@ function LaunchApp() {
     $inputData.val(window.data.join('\r\n'));
     $('.dataCount').html(data.length);
 
-    //DoPreliminaryAnalysis(data, '.prelitary-analysis');
-    //DoResearchOfTimeSeries(data, '#researchOfTimeSeries');
-    //DoResearchOfTrend(data, '#trendChecking');
-    //DoSmoothing(data, '#smoothing');
+    DoPreliminaryAnalysis(data, '.prelitary-analysis');
+    DoResearchOfTimeSeries(data, '#researchOfTimeSeries');
+    DoResearchOfTrend(data, '#trendChecking');
+    DoSmoothing(data, '#smoothing');
     ShowModels(data, '#models');
+
+    window.modelTableLogEnabled = false;
 }
 
 function DoPreliminaryAnalysis(data, selector) {
@@ -57,12 +87,11 @@ function DoPreliminaryAnalysis(data, selector) {
         data.length);
 
     const hasAbnormalValues = !ValuesAreLessThenN(irwinData, irwinCriticalNumber);
-    console.log(data);
     let irwinResultMessage = '';
     if (hasAbnormalValues) {
         const listOfAbnormalValuesList = CorrectDataByIrwinMethod(irwinData, irwinCriticalNumber);
-        irwinResultMessage = 'Исходные ряд имеет аномальные значений: ' + listOfAbnormalValuesList + '. Они замененны средними соседних уровней.';
-        DrawChart([data], '#correctedInputDataChart');
+        irwinResultMessage = 'Исходный ряд имеет аномальные значений: ' + listOfAbnormalValuesList + '. Они замененны средними соседних уровней.';
+        DrawChart([data, dataCopy], '#correctedInputDataChart');
         $('#correctedData').show();
 
         PrintTableBody('#correctedDataTable',
@@ -83,8 +112,9 @@ function DoPreliminaryAnalysis(data, selector) {
 
 function DoResearchOfTimeSeries(data, sectionSelector) {
     $(sectionSelector).show();
+    let $section = $(sectionSelector);
 
-    PrintTableBody('#mainIndicatorsOfTheDynamic',
+    PrintTableBody(sectionSelector + ' .main-indicators-table',
         [
             GenerateLabels(data),
             data,
@@ -97,12 +127,12 @@ function DoResearchOfTimeSeries(data, sectionSelector) {
         ],
         data.length);
 
-    $('#dataLength').html(data.length);
-    $('#averageIncrease').html(GetAverageIncrease(data));
-    $('#averageGrowthRate').html(GetAverageGrowthRate(data));
-    $('#averageUpGrowthRate').html(GetAverageUpGrowthRate(data));
+    $section.find('.data-length').html(data.length);
+    $section.find('.average-increase').html(GetAverageIncrease(data));
+    $section.find('.average-growth-rate').html(GetAverageGrowthRate(data));
+    $section.find('.average-up-growth-rate').html(GetAverageUpGrowthRate(data));
 
-    PrintTableBody('#forecastTable',
+    PrintTableBody(sectionSelector + ' .forecast-table',
         [
             GenerateNumberArray(data.length + 1, data.length + forecastCount),
             GetForecastByAverageIncrease(data),

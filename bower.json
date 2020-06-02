@@ -17,6 +17,7 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
-    "chartist": "^0.11.4"
+    "chartist": "^0.11.4",
+    "tablesorter": "jquery.tablesorter#^2.31.3"
   }
 }

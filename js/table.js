@@ -11,3 +11,20 @@ function PrintTableBody(bodySelector, columns, rowsCount) {
     }
     $(bodySelector).html(html);
 }
+
+function AppendModelCommonInformationToTable(options, selector) {
+    if (!modelTableLogEnabled)
+    {
+        return false;
+    }
+
+    $(selector).append(`
+        <tr>
+          <td>${options.type}</td>
+          <td>${options.model}</td>
+          <td>${options.absoluteError}</td>
+          <td>${options.approximationError}</td>
+          <td>${options.rmsError}</td>
+        </tr>
+    `);
+}

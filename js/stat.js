@@ -114,14 +114,16 @@ function GetForecastByAverageIncrease(data) {
     for (let i = 1; i < forecastCount; ++i) {
         forecast.push(forecast[i - 1] + parseFloat(GetAverageIncrease(data)));
     }
+    forecast = SetArrayPrecision(forecast);
     return forecast;
 }
 
 function GetForecastByAverageGrowthRate(data) {
-    let forecast = [(data[data.length - 1] * GetAverageGrowthRate(data) / 100).toFixed(presicion)];
+    let forecast = [(data[data.length - 1] * GetAverageGrowthRate(data) / 100)];
     for (let i = 1; i < forecastCount; ++i) {
-        forecast.push((forecast[i - 1] * GetAverageGrowthRate(data) / 100).toFixed(presicion));
+        forecast.push((forecast[i - 1] * GetAverageGrowthRate(data) / 100));
     }
+    forecast = SetArrayPrecision(forecast);
     return forecast;
 }
 

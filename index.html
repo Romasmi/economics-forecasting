@@ -7,41 +7,76 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
     <link rel="stylesheet" href="style/css/main.css"/>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   </head>
-  <body class="container">
+  <body>
+    <header class="header sticky-top">
+      <nav class="navbar navbar-expand navbar-dark bg-primary" id="menu">
+        <a class="navbar-brand" href="/" title="Бизнес-информатика МарГУ">
+          <span class="d-none d-xl-block">Бизнес-информатика</span>
+          <span class="d-xl-none">БС</span>
+        </a>
+        <ul class="navbar-nav mr-auto mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active " href="#mainSection">Исходные данные</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#irwinMethodResearch">Поиск аномальных явлений</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#researchOfTimeSeries">Основные показатели исходного ряда</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#trendChecking">Анализ тренда</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#smoothing">Сглаживание</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#models">Модели</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#modelCompare">Сравнение моделей</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
     <h1>Анализ и прогнозирование временных рядов</h1>
-    <section class="section">
+    <section class="section container-fluid" id="mainSection">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-xl-2">
+          <h3>Исходные данные</h3>
           <div class="form-group">
-            <label for="inputData">Входные данные</label> <textarea class="form-control" id="inputData" rows="15">
-4,7
-4,8
-4,8
-5,1
-3,9
-4,5
-3,5
-3,9
-3,2
-3,5
-1,7
-1,9
-1,2
-1,6
-1,2
-1,5
-0,8
-0,9
-1,4
-1,7
-2,3
-2,6
-2
-2,1
-1,7
-1,5
-1,8
+            <label for="inputData" class="text-center d-block">Временной ряд</label> <textarea class="form-control"
+                                                                                               id="inputData" rows="15">
+              4,7
+              4,8
+              4,8
+              5,1
+              3,9
+              4,5
+              3,5
+              3,9
+              3,2
+              3,5
+              1,7
+              1,9
+              1,2
+              1,6
+              1,2
+              1,5
+              0,8
+              0,9
+              1,4
+              1,7
+              2,3
+              2,6
+              2
+              2,1
+              1,7
+              1,5
+              1,8
       </textarea>
           </div>
           <div class="form-group">
@@ -56,13 +91,13 @@
             <button id="launchAppButton" class="btn btn-primary btn-block">Рассчитать</button>
           </div>
         </div>
-        <div class="col-md-9 prelitary-analysis" style="display: none">
+        <div class="col-md-10 prelitary-analysis" style="display: none">
           <h2>График исходного временного ряда</h2>
           <div class="ct-chart ct-perfect-fourth" id="inputDataChart"></div>
         </div>
       </div>
     </section>
-    <section id="irwinMethodResearch" style="display: none" class="section prelitary-analysis">
+    <section id="irwinMethodResearch" class="section container-fluid prelitary-analysis">
       <h2>Проверка на наличие аномальных уровненей временного ряда методом Ирвина</h2>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -76,12 +111,13 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane fade show active" id="irwinCheckingResult" role="tabpanel" aria-labelledby="home-tab">
-          <ul>
-            <li>Критерий ирвина при n = <span class="dataCount"></span>: <span id="irwinCriticalNumber"></span></li>
-            <li id="irwinCheckingResultMessage"></li>
-          </ul>
           <div class="row" id="correctedData" style="display: none">
-            <div class="col-md-3">
+            <div class="col-md-3 info-block">
+              <h3>Характеристики</h3>
+              <ul class="info-list">
+                <li>Критерий ирвина при n = <span class="dataCount"></span>: <span id="irwinCriticalNumber"></span></li>
+                <li id="irwinCheckingResultMessage"></li>
+              </ul>
               <h3>Скорректированный временной ряд</h3>
               <table class="table table-striped table-hover">
                 <thead>
@@ -100,20 +136,22 @@
           </div>
         </div>
         <div class="tab-pane fade" id="irwinCheckingTable" role="tabpanel" aria-labelledby="profile-tab">
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th>t</th>
-                <th>y</th>
-                <th>λ</th>
-              </tr>
-            </thead>
-            <tbody id="irwinMethodData"></tbody>
-          </table>
+          <div class="data-table-container">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>t</th>
+                  <th>y</th>
+                  <th>λ</th>
+                </tr>
+              </thead>
+              <tbody id="irwinMethodData"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
-    <section id="researchOfTimeSeries" class="section" style="display: none;">
+    <section id="researchOfTimeSeries" class="section container-fluid">
       <h2>Основные показатели динамики временного ряда</h2>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -128,24 +166,24 @@
       <div class="tab-content">
         <div class="tab-pane fade show active" id="dataAnalysisResult" role="tabpanel" aria-labelledby="home-tab">
           <div class="row">
-            <div class="col-md-4">
-              <h3>Сводная информация</h3>
-              <ul class="total-information-list">
+            <div class="col-md-3 info-block">
+              <h3>Характеристики</h3>
+              <ul class="info-list">
                 <li>
-                  Количество уровней ряда: <span id="dataLength" class="value"></span>
+                  Количество уровней ряда: <span class="value data-length"></span>
                 </li>
                 <li>
-                  Средний прирост: <span id="averageIncrease" class="value"></span>
+                  Средний прирост: <span class="value average-increase"></span>
                 </li>
                 <li>
-                  Средний темп роста: <span id="averageGrowthRate" class="value"></span>
+                  Средний темп роста: <span class="value average-growth-rate"></span>
                 </li>
                 <li>
-                  Средний темп прироста: <span id="averageUpGrowthRate" class="value"></span>
+                  Средний темп прироста: <span class="value average-up-growth-rate"></span>
                 </li>
               </ul>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
               <h3>Прогноз</h3>
               <table class="table table-hover table-striped">
                 <thead>
@@ -158,36 +196,38 @@
                     <th>среднего темпа роста</th>
                   </tr>
                 </thead>
-                <tbody id="forecastTable"></tbody>
+                <tbody class="forecast-table"></tbody>
               </table>
             </div>
           </div>
         </div>
         <div class="tab-pane fade" id="dataAnalysisTable" role="tabpanel" aria-labelledby="contact-tab">
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th rowspan="2">t</th>
-                <th rowspan="2">y(t)</th>
-                <th colspan="2">Абсолютный прирост</th>
-                <th colspan="2">Темп роста</th>
-                <th colspan="2">Темп прироста</th>
-              </tr>
-              <tr>
-                <th>Цепной</th>
-                <th>Базисные</th>
-                <th>Цепной</th>
-                <th>Базисные</th>
-                <th>Цепной</th>
-                <th>Базисные</th>
-              </tr>
-            </thead>
-            <tbody id="mainIndicatorsOfTheDynamic"></tbody>
-          </table>
+          <div class="data-table-container">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th rowspan="2">t</th>
+                  <th rowspan="2">y(t)</th>
+                  <th colspan="2">Абсолютный прирост</th>
+                  <th colspan="2">Темп роста</th>
+                  <th colspan="2">Темп прироста</th>
+                </tr>
+                <tr>
+                  <th>Цепной</th>
+                  <th>Базисные</th>
+                  <th>Цепной</th>
+                  <th>Базисные</th>
+                  <th>Цепной</th>
+                  <th>Базисные</th>
+                </tr>
+              </thead>
+              <tbody class="main-indicators-table"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
-    <section id="trendChecking" class="section" style="display: none;">
+    <section id="trendChecking" class="section container-fluid">
       <h2>Проверка наличия тренда</h2>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
@@ -213,7 +253,7 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane fade show active" id="trendChecking1Result" role="tabpanel" aria-labelledby="home-tab">
-              <ul class="total-information-list">
+              <ul class="info-list">
                 <li>Медиана: <span class="value" id="mediana"></span></li>
                 <li>Кол-во серий: <span class="value" id="seriesCount"></span></li>
                 <li>Максимальная длина серии: <span class="value" id="maxSeriesLength"></span></li>
@@ -223,16 +263,18 @@
               </ul>
             </div>
             <div class="tab-pane fade" id="trendChecking1Table" role="tabpanel" aria-labelledby="profile-tab">
-              <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>t</th>
-                    <th>y(t)</th>
-                    <th>Знак</th>
-                  </tr>
-                </thead>
-                <tbody id="signArrayTable"></tbody>
-              </table>
+              <div class="data-table-container">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>t</th>
+                      <th>y(t)</th>
+                      <th>Знак</th>
+                    </tr>
+                  </thead>
+                  <tbody id="signArrayTable"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -249,7 +291,7 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane fade show active" id="trendChecking2Result" role="tabpanel" aria-labelledby="home-tab">
-              <ul class="total-information-list">
+              <ul class="info-list">
                 <li>D: <span class="value" id="fosterStewartDCriterian"></span></li>
                 <li>δ-D: <span class="value" id="fosterStewartDeltaD"></span></li>
                 <li>t-набл.: <span class="value" id="fosterStewartTObserved"></span></li>
@@ -258,32 +300,34 @@
               </ul>
             </div>
             <div class="tab-pane fade" id="trendChecking2Table" role="tabpanel" aria-labelledby="profile-tab">
-              <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>t</th>
-                    <th>y(t)</th>
-                    <th>m</th>
-                    <th>l</th>
-                    <th>d</th>
-                  </tr>
-                </thead>
-                <tbody id="fosterStewartTable"></tbody>
-              </table>
+              <div class="data-table-container">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>t</th>
+                      <th>y(t)</th>
+                      <th>m</th>
+                      <th>l</th>
+                      <th>d</th>
+                    </tr>
+                  </thead>
+                  <tbody id="fosterStewartTable"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section id="smoothing" class="section" style="display: none;">
+    <section id="smoothing" class="section container-fluid">
       <h2>Сглаживание методом скользящей средней</h2>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#simpleSmoothing" role="tab" aria-controls="home"
+          <a class="nav-link active update-chartist" data-func="DoSmoothingByMovingAverage" data-toggle="tab" href="#simpleSmoothing" role="tab" aria-controls="home"
              aria-selected="true">Простой</a>
         </li>
         <li class="nav-item show-chart-button">
-          <a class="nav-link" data-toggle="tab" href="#weightedSmoothing" role="tab" aria-controls="profile"
+          <a class="nav-link update-chartist" data-func="DoSmoothingByMovingWeightedAverage" data-toggle="tab" href="#weightedSmoothing" role="tab" aria-controls="profile"
              aria-selected="false">Взвешенной</a>
         </li>
       </ul>
@@ -291,7 +335,7 @@
         <div class="tab-pane fade show active" id="simpleSmoothing" role="tabpanel" aria-labelledby="home-tab">
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#simpleSmoothingResult" role="tab" aria-controls="home"
+              <a class="nav-link active update-chartist" data-func="DoSmoothingByMovingAverage" data-toggle="tab" href="#simpleSmoothingResult" role="tab" aria-controls="home"
                  aria-selected="true">Результат</a>
             </li>
             <li class="nav-item">
@@ -300,96 +344,571 @@
             </li>
           </ul>
           <div class="tab-content">
-            <div class="tab-pane fade show active" id="simpleSmoothingResult" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="simpleSmoothingResult" role="tabpanel"
+                 aria-labelledby="home-tab">
               <div class="row">
                 <div class="col-md-6">
                   <h3>График простых скользящих средних g = 3</h3>
                   <div class="ct-chart ct-perfect-fourth" id="simpleSmoothing3"></div>
+                  <h3>Основные показатели динамики сглаженного вр. ряда (g = 3)</h3>
+                  <div id="researchOfTimeSeriesSS3">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#dataAnalysisResult2" role="tab" aria-controls="home"
+                           aria-selected="true">Результат</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#dataAnalysisTable2" role="tab"
+                           aria-controls="profile" aria-selected="false">Расчётная таблица</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="dataAnalysisResult2" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                          <div class="col-md-3 info-block">
+                            <h3>Характеристики</h3>
+                            <ul class="info-list">
+                              <li>
+                                Количество уровней ряда: <span class="value data-length"></span>
+                              </li>
+                              <li>
+                                Средний прирост: <span class="value average-increase"></span>
+                              </li>
+                              <li>
+                                Средний темп роста: <span class="value average-growth-rate"></span>
+                              </li>
+                              <li>
+                                Средний темп прироста: <span class="value average-up-growth-rate"></span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-9">
+                            <h3>Прогноз</h3>
+                            <table class="table table-hover table-striped">
+                              <thead>
+                                <tr>
+                                  <th rowspan="2">t</th>
+                                  <th colspan="2">На основании</th>
+                                </tr>
+                                <tr>
+                                  <th>среднего прироста</th>
+                                  <th>среднего темпа роста</th>
+                                </tr>
+                              </thead>
+                              <tbody class="forecast-table"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="dataAnalysisTable2" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="data-table-container table-responsive">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th rowspan="2">t</th>
+                                <th rowspan="2">y(t)</th>
+                                <th colspan="2">Абсолютный прирост</th>
+                                <th colspan="2">Темп роста</th>
+                                <th colspan="2">Темп прироста</th>
+                              </tr>
+                              <tr>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                              </tr>
+                            </thead>
+                            <tbody class="main-indicators-table"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <h3>График простых скользящих средних g = 4</h3>
                   <div class="ct-chart ct-perfect-fourth" id="simpleSmoothing4"></div>
+                  <h3>Основные показатели динамики сглаженного вр. ряда (g = 4)</h3>
+                  <div id="researchOfTimeSeriesSS4">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#dataAnalysisResult3" role="tab" aria-controls="home"
+                           aria-selected="true">Результат</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#dataAnalysisTable3" role="tab"
+                           aria-controls="profile" aria-selected="false">Расчётная таблица</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="dataAnalysisResult3" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                          <div class="col-md-3 info-block">
+                            <h3>Характеристики</h3>
+                            <ul class="info-list">
+                              <li>
+                                Количество уровней ряда: <span class="value data-length"></span>
+                              </li>
+                              <li>
+                                Средний прирост: <span class="value average-increase"></span>
+                              </li>
+                              <li>
+                                Средний темп роста: <span class="value average-growth-rate"></span>
+                              </li>
+                              <li>
+                                Средний темп прироста: <span class="value average-up-growth-rate"></span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-9">
+                            <h3>Прогноз</h3>
+                            <table class="table table-hover table-striped">
+                              <thead>
+                                <tr>
+                                  <th rowspan="2">t</th>
+                                  <th colspan="2">На основании</th>
+                                </tr>
+                                <tr>
+                                  <th>среднего прироста</th>
+                                  <th>среднего темпа роста</th>
+                                </tr>
+                              </thead>
+                              <tbody class="forecast-table"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="dataAnalysisTable3" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="data-table-container table-responsive">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th rowspan="2">t</th>
+                                <th rowspan="2">y(t)</th>
+                                <th colspan="2">Абсолютный прирост</th>
+                                <th colspan="2">Темп роста</th>
+                                <th colspan="2">Темп прироста</th>
+                              </tr>
+                              <tr>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                              </tr>
+                            </thead>
+                            <tbody class="main-indicators-table"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6 offset-md-3">
                   <h3>График простых скользящих средних g = 5</h3>
                   <div class="ct-chart ct-perfect-fourth" id="simpleSmoothing5"></div>
+
+                  <h3>Основные показатели динамики сглаженного вр. ряда (g = 5)</h3>
+                  <div id="researchOfTimeSeriesSS5">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#dataAnalysisResult4" role="tab" aria-controls="home"
+                           aria-selected="true">Результат</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#dataAnalysisTable4" role="tab"
+                           aria-controls="profile" aria-selected="false">Расчётная таблица</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="dataAnalysisResult4" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                          <div class="col-md-3 info-block">
+                            <h3>Характеристики</h3>
+                            <ul class="info-list">
+                              <li>
+                                Количество уровней ряда: <span class="value data-length"></span>
+                              </li>
+                              <li>
+                                Средний прирост: <span class="value average-increase"></span>
+                              </li>
+                              <li>
+                                Средний темп роста: <span class="value average-growth-rate"></span>
+                              </li>
+                              <li>
+                                Средний темп прироста: <span class="value average-up-growth-rate"></span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-9">
+                            <h3>Прогноз</h3>
+                            <table class="table table-hover table-striped">
+                              <thead>
+                                <tr>
+                                  <th rowspan="2">t</th>
+                                  <th colspan="2">На основании</th>
+                                </tr>
+                                <tr>
+                                  <th>среднего прироста</th>
+                                  <th>среднего темпа роста</th>
+                                </tr>
+                              </thead>
+                              <tbody class="forecast-table"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="dataAnalysisTable4" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="data-table-container table-responsive">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th rowspan="2">t</th>
+                                <th rowspan="2">y(t)</th>
+                                <th colspan="2">Абсолютный прирост</th>
+                                <th colspan="2">Темп роста</th>
+                                <th colspan="2">Темп прироста</th>
+                              </tr>
+                              <tr>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                              </tr>
+                            </thead>
+                            <tbody class="main-indicators-table"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="tab-pane fade" id="simpleSmoothingTable" role="tabpanel" aria-labelledby="profile-tab">
-              <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>t</th>
-                    <th>y(t)</th>
-                    <th>g = 3</th>
-                    <th>g = 4</th>
-                    <th>g = 5</th>
-                  </tr>
-                </thead>
-                <tbody id="simpleSmoothingTableBody"></tbody>
-              </table>
+              <div class="data-table-container">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>t</th>
+                      <th>y(t)</th>
+                      <th>g = 3</th>
+                      <th>g = 4</th>
+                      <th>g = 5</th>
+                    </tr>
+                  </thead>
+                  <tbody id="simpleSmoothingTableBody"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
         <div class="tab-pane fade" id="weightedSmoothing" role="tabpanel" aria-labelledby="profile-tab">
           <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#weightedSmoothingResult" role="tab" aria-controls="home"
+              <a class="nav-link active update-chartist" data-func="DoSmoothingByMovingWeightedAverage" data-toggle="tab" href="#weightedSmoothingResult" role="tab"
+                 aria-controls="home"
                  aria-selected="true">Результат</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#weightedSmoothingResultTable" role="tab" aria-controls="profile"
+              <a class="nav-link" data-toggle="tab" href="#weightedSmoothingResultTable" role="tab"
+                 aria-controls="profile"
                  aria-selected="false">Рассчётная таблица</a>
             </li>
           </ul>
           <div class="tab-content">
-            <div class="tab-pane fade show active" id="weightedSmoothingResult" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="weightedSmoothingResult" role="tabpanel"
+                 aria-labelledby="home-tab">
               <div class="row">
                 <div class="col-md-6">
-                  <h3>График простых скользящих средних g = 5</h3>
+                  <h3>График взвешенных скользящих средних g = 5</h3>
                   <div class="ct-chart ct-perfect-fourth" id="weightedSmoothing5"></div>
+
+                  <h3>Основные показатели динамики сглаженного вр. ряда (g = 5)</h3>
+                  <div id="researchOfTimeSeriesWS5">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#dataAnalysisResult5" role="tab" aria-controls="home"
+                           aria-selected="true">Результат</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#dataAnalysisTable5" role="tab"
+                           aria-controls="profile" aria-selected="false">Расчётная таблица</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="dataAnalysisResult5" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                          <div class="col-md-3 info-block">
+                            <h3>Характеристики</h3>
+                            <ul class="info-list">
+                              <li>
+                                Количество уровней ряда: <span class="value data-length"></span>
+                              </li>
+                              <li>
+                                Средний прирост: <span class="value average-increase"></span>
+                              </li>
+                              <li>
+                                Средний темп роста: <span class="value average-growth-rate"></span>
+                              </li>
+                              <li>
+                                Средний темп прироста: <span class="value average-up-growth-rate"></span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-9">
+                            <h3>Прогноз</h3>
+                            <table class="table table-hover table-striped">
+                              <thead>
+                                <tr>
+                                  <th rowspan="2">t</th>
+                                  <th colspan="2">На основании</th>
+                                </tr>
+                                <tr>
+                                  <th>среднего прироста</th>
+                                  <th>среднего темпа роста</th>
+                                </tr>
+                              </thead>
+                              <tbody class="forecast-table"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="dataAnalysisTable5" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="data-table-container table-responsive">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th rowspan="2">t</th>
+                                <th rowspan="2">y(t)</th>
+                                <th colspan="2">Абсолютный прирост</th>
+                                <th colspan="2">Темп роста</th>
+                                <th colspan="2">Темп прироста</th>
+                              </tr>
+                              <tr>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                              </tr>
+                            </thead>
+                            <tbody class="main-indicators-table"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="col-md-6">
-                  <h3>График простых скользящих средних g = 7</h3>
+                  <h3>График взвешенных скользящих средних g = 7</h3>
                   <div class="ct-chart ct-perfect-fourth" id="weightedSmoothing7"></div>
+
+                  <h3>Основные показатели динамики сглаженного вр. ряда (g = 7)</h3>
+                  <div id="researchOfTimeSeriesWS7">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#dataAnalysisResult6" role="tab" aria-controls="home"
+                           aria-selected="true">Результат</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#dataAnalysisTable6" role="tab"
+                           aria-controls="profile" aria-selected="false">Расчётная таблица</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="dataAnalysisResult6" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                          <div class="col-md-3 info-block">
+                            <h3>Характеристики</h3>
+                            <ul class="info-list">
+                              <li>
+                                Количество уровней ряда: <span class="value data-length"></span>
+                              </li>
+                              <li>
+                                Средний прирост: <span class="value average-increase"></span>
+                              </li>
+                              <li>
+                                Средний темп роста: <span class="value average-growth-rate"></span>
+                              </li>
+                              <li>
+                                Средний темп прироста: <span class="value average-up-growth-rate"></span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-9">
+                            <h3>Прогноз</h3>
+                            <table class="table table-hover table-striped">
+                              <thead>
+                                <tr>
+                                  <th rowspan="2">t</th>
+                                  <th colspan="2">На основании</th>
+                                </tr>
+                                <tr>
+                                  <th>среднего прироста</th>
+                                  <th>среднего темпа роста</th>
+                                </tr>
+                              </thead>
+                              <tbody class="forecast-table"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="dataAnalysisTable6" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="data-table-container table-responsive">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th rowspan="2">t</th>
+                                <th rowspan="2">y(t)</th>
+                                <th colspan="2">Абсолютный прирост</th>
+                                <th colspan="2">Темп роста</th>
+                                <th colspan="2">Темп прироста</th>
+                              </tr>
+                              <tr>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                              </tr>
+                            </thead>
+                            <tbody class="main-indicators-table"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="col-md-6 offset-md-3">
-                  <h3>График простых скользящих средних g = 9</h3>
+                  <h3>График взвешенных скользящих средних g = 9</h3>
                   <div class="ct-chart ct-perfect-fourth" id="weightedSmoothing9"></div>
+
+                  <h3>Основные показатели динамики сглаженного вр. ряда (g = 9)</h3>
+                  <div id="researchOfTimeSeriesWS9">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#dataAnalysisResult7" role="tab" aria-controls="home"
+                           aria-selected="true">Результат</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#dataAnalysisTable7" role="tab"
+                           aria-controls="profile" aria-selected="false">Расчётная таблица</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="dataAnalysisResult7" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                          <div class="col-md-3 info-block">
+                            <h3>Характеристики</h3>
+                            <ul class="info-list">
+                              <li>
+                                Количество уровней ряда: <span class="value data-length"></span>
+                              </li>
+                              <li>
+                                Средний прирост: <span class="value average-increase"></span>
+                              </li>
+                              <li>
+                                Средний темп роста: <span class="value average-growth-rate"></span>
+                              </li>
+                              <li>
+                                Средний темп прироста: <span class="value average-up-growth-rate"></span>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-9">
+                            <h3>Прогноз</h3>
+                            <table class="table table-hover table-striped">
+                              <thead>
+                                <tr>
+                                  <th rowspan="2">t</th>
+                                  <th colspan="2">На основании</th>
+                                </tr>
+                                <tr>
+                                  <th>среднего прироста</th>
+                                  <th>среднего темпа роста</th>
+                                </tr>
+                              </thead>
+                              <tbody class="forecast-table"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="dataAnalysisTable7" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="data-table-container table-responsive">
+                          <table class="table table-striped table-hover">
+                            <thead>
+                              <tr>
+                                <th rowspan="2">t</th>
+                                <th rowspan="2">y(t)</th>
+                                <th colspan="2">Абсолютный прирост</th>
+                                <th colspan="2">Темп роста</th>
+                                <th colspan="2">Темп прироста</th>
+                              </tr>
+                              <tr>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                                <th>Цепной</th>
+                                <th>Базисные</th>
+                              </tr>
+                            </thead>
+                            <tbody class="main-indicators-table"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
             <div class="tab-pane fade" id="weightedSmoothingResultTable" role="tabpanel" aria-labelledby="profile-tab">
-              <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>t</th>
-                    <th>y(t)</th>
-                    <th>g = 5</th>
-                    <th>g = 7</th>
-                    <th>g = 9</th>
-                  </tr>
-                </thead>
-                <tbody id="weightedSmoothingResultTableBody"></tbody>
-              </table>
+              <div class="data-table-container">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>t</th>
+                      <th>y(t)</th>
+                      <th>g = 5</th>
+                      <th>g = 7</th>
+                      <th>g = 9</th>
+                    </tr>
+                  </thead>
+                  <tbody id="weightedSmoothingResultTableBody"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section id="models" class="section" style="display: none;">
+    <section id="models" class="section container-fluid">
+      <h2>Аналитические модели</h2>
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active update-chartist"  data-func="ShowParabolicModel" data-toggle="tab" href="#linearModel" role="tab" aria-controls="home"
+          <a class="nav-link active update-chartist" data-func="ShowParabolicModel" data-toggle="tab"
+             href="#linearModel" role="tab" aria-controls="home"
              aria-selected="true">Линейная</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link update-chartist" data-func="ShowParabolicModel" data-toggle="tab" href="#parabolicModel" role="tab" aria-controls="profile"
+          <a class="nav-link update-chartist" data-func="ShowParabolicModel" data-toggle="tab" href="#parabolicModel"
+             role="tab" aria-controls="profile"
              aria-selected="false">Параболическая</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link update-chartist" data-func="ShowExponentialModel" data-toggle="tab" href="#exponentialModel" role="tab" aria-controls="profile"
+          <a class="nav-link update-chartist" data-func="ShowExponentialModel" data-toggle="tab"
+             href="#exponentialModel" role="tab" aria-controls="profile"
              aria-selected="false">Экспоненциальная</a>
         </li>
       </ul>
@@ -401,7 +920,8 @@
                  aria-selected="true">Центрированная</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link update-chartist" data-func="ShowLinearNonCenteredModel" data-toggle="tab" href="#linearNonCenteredModel" role="tab" aria-controls="profile"
+              <a class="nav-link update-chartist" data-func="ShowLinearNonCenteredModel" data-toggle="tab"
+                 href="#linearNonCenteredModel" role="tab" aria-controls="profile"
                  aria-selected="false">Нецентрированная</a>
             </li>
           </ul>
@@ -409,16 +929,19 @@
             <div class="tab-pane fade show active" id="linearCenteredModel" role="tabpanel" aria-labelledby="home-tab">
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#linearCenteredModelResult" role="tab" aria-controls="home"
+                  <a class="nav-link active" data-toggle="tab" href="#linearCenteredModelResult" role="tab"
+                     aria-controls="home"
                      aria-selected="true">Результат</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#linearCenteredModelTable" role="tab" aria-controls="profile"
+                  <a class="nav-link" data-toggle="tab" href="#linearCenteredModelTable" role="tab"
+                     aria-controls="profile"
                      aria-selected="false">Рассчётная таблица</a>
                 </li>
               </ul>
               <div class="tab-content">
-                <div class="tab-pane fade show active" id="linearCenteredModelResult" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade show active" id="linearCenteredModelResult" role="tabpanel"
+                     aria-labelledby="home-tab">
                   <div class="row">
                     <div class="col-md-4">
                       <ul>
@@ -429,44 +952,49 @@
                         <li>a1: <span class="value" id="linearCenteredModelA1"></span></li>
                         <li>a: <span class="value" id="linearCenteredModelA0"></span></li>
                         <li>Линейная модель: <span class="value" id="linearCenteredModelEquation"></span></li>
-                        <li>Ср. абс. ошибка: <span class="value" id="linearCenteredModelAbsoluteError"></span></li>
-                        <li>Ср. ошибка аппроксимации: <span class="value" id="linearCenteredModelApproximationError"></span></li>
-                        <li>Среднеквадр. ошибка: <span class="value" id="linearCenteredModelRmsError"></span></li>
+                        <li>Ср. абс. ошибка: <span class="value absolute-error"></span></li>
+                        <li>Ср. ошибка аппроксимации: <span class="value approximation-error"></span></li>
+                        <li>Среднеквадр. ошибка: <span class="value rms-error"></span></li>
                       </ul>
                     </div>
                     <div class="col-md-8">
-                      <div class="ct-chart ct-perfect-fourth" id="linearCenteredModelChart"></div>
+                      <div class="ct-chart ct-perfect-fourth model-chart"></div>
                     </div>
                   </div>
                 </div>
                 <div class="tab-pane fade" id="linearCenteredModelTable" role="tabpanel" aria-labelledby="profile-tab">
-                  <table class="table table-striped table-hover">
-                    <thead>
-                      <tr>
-                        <th>t</th>
-                        <th>y(t)</th>
-                        <th>y(t)</th>
-                        <th>t^t</th>
-                      </tr>
-                    </thead>
-                    <tbody id="linearCenteredModelTableBody"></tbody>
-                  </table>
+                  <div class="data-table-container">
+                    <table class="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th>t</th>
+                          <th>y(t)</th>
+                          <th>y(t)</th>
+                          <th>t^t</th>
+                        </tr>
+                      </thead>
+                      <tbody class="model-table-body"></tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="tab-pane fade" id="linearNonCenteredModel" role="tabpanel" aria-labelledby="profile-tab">
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#linearNonCenteredModelResult" role="tab" aria-controls="home"
+                  <a class="nav-link active" data-toggle="tab" href="#linearNonCenteredModelResult" role="tab"
+                     aria-controls="home"
                      aria-selected="true">Результат</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#linearNonCenteredModelTable" role="tab" aria-controls="profile"
+                  <a class="nav-link" data-toggle="tab" href="#linearNonCenteredModelTable" role="tab"
+                     aria-controls="profile"
                      aria-selected="false">Рассчётная таблица</a>
                 </li>
               </ul>
               <div class="tab-content">
-                <div class="tab-pane fade show active" id="linearNonCenteredModelResult" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade show active" id="linearNonCenteredModelResult" role="tabpanel"
+                     aria-labelledby="home-tab">
                   <div class="row">
                     <div class="col-md-4">
                       <ul>
@@ -477,14 +1005,18 @@
                         <li>a1: <span class="value" id="linearNonCenteredModelA1"></span></li>
                         <li>a: <span class="value" id="linearNonCenteredModelA0"></span></li>
                         <li>Линейная модель: <span class="value" id="linearNonCenteredModelEquation"></span></li>
-                      </ul>
+                        <li>Ср. абс. ошибка: <span class="value absolute-error"></span></li>
+                        <li>Ср. ошибка аппроксимации: <span class="value approximation-error"></span></li>
+                        <li>Среднеквадр. ошибка: <span class="value rms-error"></span></li>
+                       </ul>
                     </div>
                     <div class="col-md-8">
-                      <div class="ct-chart ct-perfect-fourth" id="linearNonCenteredModelChart"></div>
+                      <div class="ct-chart ct-perfect-fourth model-chart"></div>
                     </div>
                   </div>
                 </div>
-                <div class="tab-pane fade" id="linearNonCenteredModelTable" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="tab-pane fade" id="linearNonCenteredModelTable" role="tabpanel"
+                     aria-labelledby="profile-tab">
                   <table class="table table-striped table-hover">
                     <thead>
                       <tr>
@@ -494,7 +1026,7 @@
                         <th>t^t</th>
                       </tr>
                     </thead>
-                    <tbody id="linearNonCenteredModelTableBody"></tbody>
+                    <tbody class="model-table-body"></tbody>
                   </table>
                 </div>
               </div>
@@ -527,10 +1059,14 @@
                     <li>a1: <span class="value" id="parabolicModelA1"></span></li>
                     <li>a: <span class="value" id="parabolicModelA0"></span></li>
                     <li>Полиномиальная модель: <span class="value" id="parabolicModel2"></span></li>
+                    <li>Ср. абс. ошибка: <span class="value absolute-error"></span></li>
+                    <li>Ср. ошибка аппроксимации: <span class="value approximation-error"></span></li>
+                    <li>Среднеквадр. ошибка: <span class="value rms-error"></span></li>
+
                   </ul>
                 </div>
                 <div class="col-md-8">
-                  <div class="ct-chart ct-perfect-fourth" id="parabolicModel2Chart"></div>
+                  <div class="ct-chart ct-perfect-fourth model-chart"></div>
                 </div>
               </div>
             </div>
@@ -546,7 +1082,7 @@
                     <th>t^4</th>
                   </tr>
                 </thead>
-                <tbody id="parabolicModelTableBody"></tbody>
+                <tbody class="model-table-body"></tbody>
               </table>
             </div>
           </div>
@@ -563,25 +1099,29 @@
             </li>
           </ul>
           <div class="tab-content">
-            <div class="tab-pane fade show active" id="exponentialModelResult" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="exponentialModelResult" role="tabpanel"
+                 aria-labelledby="home-tab">
               <div class="row">
                 <div class="col-md-4">
                   <ul>
-<!--
-                    <li>Сумма t: <span class="value" id="parabolicModelTSum"></span></li>
-                    <li>Сумма y(t): <span class="value" id="parabolicModelYOfTSum"></span></li>
-                    <li>Сумма y(t) * t: <span class="value" id="parabolicModelYOfTonTSum"></span></li>
-                    <li>Сумма t^t: <span class="value" id="parabolicModelTOnTSum"></span></li>
-                    <li>Сумма y(t) * t^t: <span class="value" id="parabolicModelYofTonTOnTSum"></span></li>
-                    <li>Сумма t^4: <span class="value" id="parabolicModelTIn4Sum"></span></li>
--->
+                    <!--
+                                        <li>Сумма t: <span class="value" id="parabolicModelTSum"></span></li>
+                                        <li>Сумма y(t): <span class="value" id="parabolicModelYOfTSum"></span></li>
+                                        <li>Сумма y(t) * t: <span class="value" id="parabolicModelYOfTonTSum"></span></li>
+                                        <li>Сумма t^t: <span class="value" id="parabolicModelTOnTSum"></span></li>
+                                        <li>Сумма y(t) * t^t: <span class="value" id="parabolicModelYofTonTOnTSum"></span></li>
+                                        <li>Сумма t^4: <span class="value" id="parabolicModelTIn4Sum"></span></li>
+                    -->
                     <li>a: <span class="value" id="exponentialModelA"></span></li>
                     <li>b: <span class="value" id="exponentialModelB"></span></li>
                     <li>Экспоненциальня модель: <span class="value" id="exponentialModel2"></span></li>
+                    <li>Ср. абс. ошибка: <span class="value absolute-error"></span></li>
+                    <li>Ср. ошибка аппроксимации: <span class="value approximation-error"></span></li>
+                    <li>Среднеквадр. ошибка: <span class="value rms-error"></span></li>
                   </ul>
                 </div>
                 <div class="col-md-8">
-                  <div class="ct-chart ct-perfect-fourth" id="exponentialModelChart"></div>
+                  <div class="ct-chart ct-perfect-fourth model-chart"></div>
                 </div>
               </div>
             </div>
@@ -597,17 +1137,35 @@
                     <th>t^4</th>
                   </tr>
                 </thead>
-                <tbody id="exponentialModelTableBody"></tbody>
+                <tbody class="model-table-body"></tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
     </section>
+    <section id="modelCompare" class="section container">
+      <h2>Сравнение аналитических моделей</h2>
+      <table class="table table-striped table-hover" id="modelsCommonInformationTable">
+        <thead>
+          <tr>
+            <th>Тип</th>
+            <th>Модель</th>
+            <th class="sortable">Ср. абс. ошибка <i class="fa fa-fw fa-sort"></i></th>
+            <th class="sortable">Ср. ош. аппроксимациии <i class="fa fa-fw fa-sort"></i></th>
+            <th class="sortable">Ср.квадр. ошибка <i class="fa fa-fw fa-sort"></i></th>
+          </tr>
+        </thead>
+        <tbody id="modelsTableBody">
+
+        </tbody>
+      </table>
+    </section>
     <footer>
       <script src="bower_components/jquery/dist/jquery.min.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
       <script src="bower_components/chartist/dist/chartist.min.js"></script>
+      <script src="bower_components/tablesorter/dist/js/jquery.tablesorter.min.js"></script>
       <script src="js/model_accuracy.js"></script>
       <script src="js/util.js"></script>
       <script src="js/math.js"></script>

@@ -18,6 +18,10 @@ function DoSmoothingByMovingAverage(data) {
             simpleSmoothing5
         ],
         data.length);
+
+    DoResearchOfTimeSeries(simpleSmoothing3,'#researchOfTimeSeriesSS3');
+    DoResearchOfTimeSeries(simpleSmoothing4,'#researchOfTimeSeriesSS4');
+    DoResearchOfTimeSeries(simpleSmoothing5,'#researchOfTimeSeriesSS5');
 }
 
 function DoSmoothingByMovingWeightedAverage(data) {
@@ -39,8 +43,12 @@ function DoSmoothingByMovingWeightedAverage(data) {
             weightedSmoothing9
         ],
         data.length);
-}
 
+
+    DoResearchOfTimeSeries(weightedSmoothing5,'#researchOfTimeSeriesWS5');
+    DoResearchOfTimeSeries(weightedSmoothing7,'#researchOfTimeSeriesWS7');
+    DoResearchOfTimeSeries(weightedSmoothing9,'#researchOfTimeSeriesWS9');
+}
 
 function GetDataByMovingAverageMethod(data, gInterval) {
     let arr = [];
