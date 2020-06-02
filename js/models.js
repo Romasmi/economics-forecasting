@@ -11,7 +11,14 @@ function ShowLinearNonCenteredModel(data) {
     const a0 = yOfTSum / data.length - a1 * tSum / data.length;
     const modelY = tArray.map(item => a1 * item + a0);
 
-    PrintTableBody('#linearNonCenteredModelTableBody', [
+    const forecastT = GenereateForecastTimeSeries(tArray, forecastCount);
+    const forecastY = forecastT.map(item => (a1 * item + a0).toFixed(presicion));
+    PrintTableBody(containerSelector + ' .forecast', [
+        forecastT,
+        forecastY,
+    ], forecastCount);
+
+    PrintTableBody(containerSelector + ' .model-table-body', [
         GenerateLabels(data),
         data,
         MultiplyArrays(tArray, data),
@@ -27,7 +34,7 @@ function ShowLinearNonCenteredModel(data) {
     $('#linearNonCenteredModelA0').html(a0.toFixed(presicion));
     $('#linearNonCenteredModelEquation').html(model);
 
-    ShowCommonStat(data, modelY, containerSelector,  tArray);
+    ShowCommonStat(data, modelY, containerSelector,  tArray, forecastT, forecastY);
     AppendModelCommonInformationToTable({
         type: 'Линейная нецентр.',
         model: model,
@@ -50,6 +57,12 @@ function ShowLinearCenteredModel(data) {
     const a0 = yOfTSum / data.length - a1 * tSum / data.length;
 
     const modelY = tArray.map(item => a1 * item + a0);
+    const forecastT = GenereateForecastTimeSeries(tArray, forecastCount);
+    const forecastY = forecastT.map(item => (a1 * item + a0).toFixed(presicion));
+    PrintTableBody(containerSelector + ' .forecast', [
+        forecastT,
+        forecastY,
+    ], forecastCount);
 
     PrintTableBody(containerSelector + ' .model-table-body', [
         tArray,
@@ -67,7 +80,7 @@ function ShowLinearCenteredModel(data) {
     $('#linearCenteredModelA0').html(a0.toFixed(presicion));
     $('#linearCenteredModelEquation').html(model);
 
-    ShowCommonStat(data, modelY, containerSelector,  tArray);
+    ShowCommonStat(data, modelY, containerSelector,  tArray, forecastT, forecastY);
 
     AppendModelCommonInformationToTable({
         type: 'Линейная центр.',
@@ -94,6 +107,14 @@ function ShowParabolicModel(data) {
     const a0 = yOfTSum / data.length - a2 * tOnTSum / data.length;
     const modelY = tArray.map(item => a0 + a1 * item + a2 * Math.pow(item, 2));
 
+    const forecastT = GenereateForecastTimeSeries(tArray, forecastCount);
+    const forecastY = forecastT.map(item => (a0 + a1 * item + a2 * Math.pow(item, 2)).toFixed(presicion));
+    PrintTableBody(containerSelector + ' .forecast', [
+        forecastT,
+        forecastY,
+    ], forecastCount);
+
+
     PrintTableBody(containerSelector + ' .model-table-body', [
         GenerateLabels(data),
         data,
@@ -115,7 +136,7 @@ function ShowParabolicModel(data) {
     $('#parabolicModelA0').html(a0.toFixed(presicion));
     $('#parabolicModel2').html(model);
 
-    ShowCommonStat(data, modelY, containerSelector,  tArray);
+    ShowCommonStat(data, modelY, containerSelector,  tArray, forecastT, forecastY);
 
     AppendModelCommonInformationToTable({
         type: 'Параболическая центр.',
@@ -137,6 +158,12 @@ function ShowExponentialModel(data) {
     const parameterA = Math.exp(lnYtSum / data.length);
     const parameterB = Math.exp(lnYtTSum / t2Sum);
     const modelY = tArray.map(item => parameterA * Math.pow(parameterB, item));
+    const forecastT = GenereateForecastTimeSeries(tArray, forecastCount);
+    const forecastY = forecastT.map(item => (parameterA * Math.pow(parameterB, item)).toFixed(presicion));
+    PrintTableBody(containerSelector + ' .forecast', [
+        forecastT,
+        forecastY,
+    ], forecastCount);
 
     const model = `y = ${parameterA.toFixed(presicion)} * ${parameterB.toFixed(presicion)}^t`;
 
@@ -144,7 +171,7 @@ function ShowExponentialModel(data) {
     $('#exponentialModelB').html(parameterB.toFixed(presicion));
     $('#exponentialModel2').html(model);
 
-    ShowCommonStat(data, modelY, containerSelector,  tArray);
+    ShowCommonStat(data, modelY, containerSelector,  tArray, forecastT, forecastY);
 
     AppendModelCommonInformationToTable({
         type: 'Экспоненц. центр.',
@@ -155,7 +182,7 @@ function ShowExponentialModel(data) {
     }, commonModelInformationContainerSelector);
 }
 
-function ShowCommonStat(data, modelY, containerSelector, tArray) {
+function ShowCommonStat(data, modelY, containerSelector, tArray, forecastT = [], forecastY = []) {
     const approximationError = getApproximationError(data, modelY);
     let $container = $(containerSelector);
 
@@ -163,7 +190,7 @@ function ShowCommonStat(data, modelY, containerSelector, tArray) {
     $container.find('.approximation-error').html(`${approximationError}%` + getConclusionByApproximationError(approximationError));
     $container.find('.rms-error').html(getRmsError(data, modelY, 1));
 
-    DrawChart([data, modelY], containerSelector + ' .model-chart', tArray);
+    DrawChart([data, modelY.concat(forecastY)], containerSelector + ' .model-chart', tArray.concat(forecastT));
 }
 
 function GetCenteredTimeSeries(data) {
@@ -175,4 +202,8 @@ function GetCenteredTimeSeries(data) {
     }
 
     return GenerateNumberArray(-seriesStart, data.length - seriesStart - 1);
+}
+
+function GenereateForecastTimeSeries(tArray, forecastCount) {
+    return  GenerateNumberArray(tArray[tArray.length - 1] + 1, tArray[tArray.length - 1] + forecastCount);
 }

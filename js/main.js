@@ -48,13 +48,14 @@ $(function () {
 
 function LaunchApp() {
     window.modelTableLogEnabled = true;
+    $(commonModelInformationContainerSelector).empty();
 
     $inputData = $('#inputData');
     const input = $inputData.val();
 
-    window.data = ConvertToNumericArray(GetArrayFromText(input));
     window.presicion = $('#precision').val();
-    window.forecastCount = $('#forecastCount').val();
+    window.forecastCount = parseInt($('#forecastCount').val());
+    window.data = PrepareData(input);
 
     $inputData.val(window.data.join('\r\n'));
     $('.dataCount').html(data.length);
@@ -90,9 +91,8 @@ function DoPreliminaryAnalysis(data, selector) {
     let irwinResultMessage = '';
     if (hasAbnormalValues) {
         const listOfAbnormalValuesList = CorrectDataByIrwinMethod(irwinData, irwinCriticalNumber);
-        irwinResultMessage = 'Исходный ряд имеет аномальные значений: ' + listOfAbnormalValuesList + '. Они замененны средними соседних уровней.';
-        DrawChart([data, dataCopy], '#correctedInputDataChart');
-        $('#correctedData').show();
+        irwinResultMessage = 'Исходный ряд имеет аномальные значения: ' + listOfAbnormalValuesList + '. Они заменены средними соседних уровней.';
+        DrawChart([dataCopy, data], '#correctedInputDataChart');
 
         PrintTableBody('#correctedDataTable',
             [
@@ -100,10 +100,10 @@ function DoPreliminaryAnalysis(data, selector) {
                 data
             ],
             data.length);
-        $('#correctedData').show();
+        $('.corrected-data').show();
     } else {
         irwinResultMessage = 'Аномальных значений не найдено. Исходный ряд остаётся без изменений.';
-        $('#correctedData').hide();
+        $('.corrected-data').hide();
     }
 
     $('#irwinCheckingResultMessage').html(irwinResultMessage);

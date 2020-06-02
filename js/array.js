@@ -78,3 +78,27 @@ function GenerateArrayByHalf(array) {
 function SetArrayPrecision(array) {
     return array.map(item => item.toFixed(presicion));
 }
+
+function PrepareData(input) {
+    let data = ConvertToNumericArray(GetArrayFromText(input));
+
+    let moreThan1000 = false;
+    for (let i = 0; i < data.length; ++i)
+    {
+        if (data[i] > 1000)
+        {
+            moreThan1000 = true;
+            break;
+        }
+    }
+
+    if (moreThan1000)
+    {
+        for (let i = 0; i < data.length; ++i)
+        {
+            data[i] /= 1000;
+            data[i] = parseFloat(data[i].toFixed(presicion));
+        }
+    }
+    return data;
+}
