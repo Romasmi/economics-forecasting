@@ -128,4 +128,5 @@ function ShowModels(data, selector) {
     ShowLinearNonCenteredModel(data);
     ShowLinearCenteredModel(data);
     ShowParabolicModel(data);
+    ShowExponentialModel(data);
 }

@@ -381,12 +381,16 @@
     <section id="models" class="section" style="display: none;">
       <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#linearModel" role="tab" aria-controls="home"
+          <a class="nav-link active update-chartist"  data-func="ShowParabolicModel" data-toggle="tab" href="#linearModel" role="tab" aria-controls="home"
              aria-selected="true">Линейная</a>
         </li>
         <li class="nav-item">
           <a class="nav-link update-chartist" data-func="ShowParabolicModel" data-toggle="tab" href="#parabolicModel" role="tab" aria-controls="profile"
              aria-selected="false">Параболическая</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link update-chartist" data-func="ShowExponentialModel" data-toggle="tab" href="#exponentialModel" role="tab" aria-controls="profile"
+             aria-selected="false">Экспоненциальная</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -425,6 +429,9 @@
                         <li>a1: <span class="value" id="linearCenteredModelA1"></span></li>
                         <li>a: <span class="value" id="linearCenteredModelA0"></span></li>
                         <li>Линейная модель: <span class="value" id="linearCenteredModelEquation"></span></li>
+                        <li>Ср. абс. ошибка: <span class="value" id="linearCenteredModelAbsoluteError"></span></li>
+                        <li>Ср. ошибка аппроксимации: <span class="value" id="linearCenteredModelApproximationError"></span></li>
+                        <li>Среднеквадр. ошибка: <span class="value" id="linearCenteredModelRmsError"></span></li>
                       </ul>
                     </div>
                     <div class="col-md-8">
@@ -544,12 +551,64 @@
             </div>
           </div>
         </div>
+        <div class="tab-pane fade" id="exponentialModel" role="tabpanel" aria-labelledby="profile-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#parabolicModelResult" role="tab" aria-controls="home"
+                 aria-selected="true">Результат</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#parabolicModelTable" role="tab" aria-controls="profile"
+                 aria-selected="false">Рассчётная таблица</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="exponentialModelResult" role="tabpanel" aria-labelledby="home-tab">
+              <div class="row">
+                <div class="col-md-4">
+                  <ul>
+<!--
+                    <li>Сумма t: <span class="value" id="parabolicModelTSum"></span></li>
+                    <li>Сумма y(t): <span class="value" id="parabolicModelYOfTSum"></span></li>
+                    <li>Сумма y(t) * t: <span class="value" id="parabolicModelYOfTonTSum"></span></li>
+                    <li>Сумма t^t: <span class="value" id="parabolicModelTOnTSum"></span></li>
+                    <li>Сумма y(t) * t^t: <span class="value" id="parabolicModelYofTonTOnTSum"></span></li>
+                    <li>Сумма t^4: <span class="value" id="parabolicModelTIn4Sum"></span></li>
+-->
+                    <li>a: <span class="value" id="exponentialModelA"></span></li>
+                    <li>b: <span class="value" id="exponentialModelB"></span></li>
+                    <li>Экспоненциальня модель: <span class="value" id="exponentialModel2"></span></li>
+                  </ul>
+                </div>
+                <div class="col-md-8">
+                  <div class="ct-chart ct-perfect-fourth" id="exponentialModelChart"></div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="exModelTable" role="tabpanel" aria-labelledby="profile-tab">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>t</th>
+                    <th>y(t)</th>
+                    <th>y(t) * t</th>
+                    <th>t^t</th>
+                    <th>y(t) * t^t</th>
+                    <th>t^4</th>
+                  </tr>
+                </thead>
+                <tbody id="exponentialModelTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <footer>
       <script src="bower_components/jquery/dist/jquery.min.js"></script>
       <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
       <script src="bower_components/chartist/dist/chartist.min.js"></script>
+      <script src="js/model_accuracy.js"></script>
       <script src="js/util.js"></script>
       <script src="js/math.js"></script>
       <script src="js/array.js"></script>

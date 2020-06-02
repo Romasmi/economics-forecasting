@@ -2,7 +2,6 @@ function ShowLinearNonCenteredModel(data) {
     const tArray = GenerateLabels(data);
 
     const tSum = tArray.reduce((a, b) => a + b);
-    console.log(tArray, tSum);
     const yOfTSum = data.reduce((a, b) => a + b);
     const yOfTonTSum = MultiplyArrays(tArray, data).reduce((a, b) => a + b);
     const tOnTSum = MultiplyArrays(tArray, GenerateLabels(data)).reduce((a, b) => a + b);
@@ -29,7 +28,7 @@ function ShowLinearNonCenteredModel(data) {
 }
 
 function ShowLinearCenteredModel(data) {
-    const tArray =GetCenteredTimeSeries(data);
+    const tArray = GetCenteredTimeSeries(data);
 
     const tSum = tArray.reduce((a, b) => a + b);
     const yOfTSum = data.reduce((a, b) => a + b);
@@ -38,6 +37,9 @@ function ShowLinearCenteredModel(data) {
 
     const a1 = (data.length * yOfTonTSum - yOfTSum * tSum) / (data.length * tOnTSum - Math.pow(tSum, 2));
     const a0 = yOfTSum / data.length - a1 * tSum / data.length;
+
+    const modelY = tArray.map(item => a1 * item + a0);
+    const approximationError = getApproximationError(data, modelY);
 
     PrintTableBody('#linearCenteredModelTableBody', [
         tArray,
@@ -53,8 +55,11 @@ function ShowLinearCenteredModel(data) {
     $('#linearCenteredModelA1').html(a1.toFixed(presicion));
     $('#linearCenteredModelA0').html(a0.toFixed(presicion));
     $('#linearCenteredModelEquation').html(`y = ${a1.toFixed(presicion)} * x + ${a0.toFixed(presicion)}`);
+    $('#linearCenteredModelAbsoluteError').html(getAbsoluteError(data, modelY));
+    $('#linearCenteredModelApproximationError').html(`${approximationError}%` + getConclusionByApproximationError(approximationError));
+    $('#linearCenteredModelRmsError').html(getRmsError(data, modelY, 1));
 
-    DrawChart([data, tArray.map(item => a1 * item + a0)], '#linearCenteredModelChart', tArray);
+    DrawChart([data, modelY], '#linearCenteredModelChart', tArray);
 }
 
 function ShowParabolicModel(data) {
@@ -84,6 +89,7 @@ function ShowParabolicModel(data) {
     $('#parabolicModelYOfTSum').html(yOfTSum);
     $('#parabolicModelYOfTonTSum').html(yOfTonTSum.toFixed(presicion));
     $('#parabolicModelTOnTSum').html(tOnTSum.toFixed(presicion));
+    $('#parabolicModelTIn4Sum').html(tIn4Sum.toFixed(presicion));
     $('#parabolicModelA2').html(a2.toFixed(presicion));
     $('#parabolicModelA1').html(a1.toFixed(presicion));
     $('#parabolicModelA0').html(a0.toFixed(presicion));
@@ -101,4 +107,19 @@ function GetCenteredTimeSeries(data) {
     }
 
     return GenerateNumberArray(-seriesStart, data.length - seriesStart - 1);
+}
+
+function ShowExponentialModel(data) {
+    const tArray = GetCenteredTimeSeries(data);
+    const lnYtSum = data.reduce((a, b) => a + Math.log(b));
+    const t2Sum = tArray.reduce((a, b) => a + Math.pow(b, 2));
+    const lnYtTSum = MultiplyArrays(data.map(item => Math.log(item)), tArray).reduce((a, b) => a + b);
+    const parameterA = Math.exp(lnYtSum / data.length);
+    const parameterB = Math.exp(lnYtTSum / t2Sum);
+
+    $('#exponentialModelA').html(parameterA.toFixed(presicion));
+    $('#exponentialModelB').html(parameterB.toFixed(presicion));
+    $('#exponentialModel2').html(`y = ${parameterA.toFixed(presicion)} * ${parameterB.toFixed(presicion)}^t`);
+
+    DrawChart([data, tArray.map(item =>  parameterA * Math.pow(parameterB, item))], '#exponentialModelChart', tArray);
 }
