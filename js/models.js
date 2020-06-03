@@ -186,7 +186,7 @@ function ShowCommonStat(data, modelY, containerSelector, tArray, forecastT = [],
     const approximationError = getApproximationError(data, modelY);
     let $container = $(containerSelector);
 
-    $container.find('absolute-error').html(getAbsoluteError(data, modelY));
+    $container.find('.absolute-error').html(getAbsoluteError(data, modelY));
     $container.find('.approximation-error').html(`${approximationError}%` + getConclusionByApproximationError(approximationError));
     $container.find('.rms-error').html(getRmsError(data, modelY, 1));
 
